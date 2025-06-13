@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>PNF or EAD during liver transplant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f0f2f5, #e0ecff);
+      padding: 30px;
+      max-width: 600px;
+      margin: auto;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #2980b9;
+      color: white;
+      padding: 12px 20px;
+      margin-top: 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #1c6391;
+    }
+    .result {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+    }
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      input {
+        width: 90%;
+        font-size: 14px;
+        padding: 8px;
+      }
+      button {
+        width: 90%;
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>PNF/EAD Risk Calculator</h2>
+  <h2>(liver transplant)</h2>
+  <label for="bili">Bilirubin :</label>
+  <input type="number" id="bili" step="any">
+
+  <label for="plq">Platelets :</label>
+  <input type="number" id="plq" step="any">
+
+  <label for="temps">Time Intervention :</label>
+  <input type="number" id="temps" step="any">
+
+  <label for="steatose">Reperfusion Steatosis Micro :</label>
+  <input type="number" id="steatose" step="any">
+
+  <button onclick="calculerScore()">Compute Score</button>
+
+  <div class="result" id="resultat"></div>
+
+<script>
+  function calculerScore() {
+    const biliVal = document.getElementById("bili").value;
+    const plqVal = document.getElementById("plq").value;
+    const tempsVal = document.getElementById("temps").value;
+    const steatoseVal = document.getElementById("steatose").value;
+
+    if (biliVal === "" || plqVal === "" || tempsVal === "" || steatoseVal === "") {
+      alert("Please fill in all the fields to calculate the score.");
+      return;
+    }
+
+    const bili = parseFloat(biliVal);
+    const plq = parseFloat(plqVal);
+    const temps = parseFloat(tempsVal);
+    const steatose = parseFloat(steatoseVal);
+
+    const score = (bili * 0.0027964) +
+                  (plq * -0.0045604) +
+                  (temps * 0.0034242) +
+                  (steatose * 0.0225287);
+
+    const interpretation = score >= 2.19860
+      ? "⚠️ HIGH RISK (at risk)"
+      : "✅ LOW RISK";
+
+    document.getElementById("resultat").innerHTML =
+      `Computed score : ${score.toFixed(5)}<br>Interpretation : ${interpretation}`;
+  }
+</script>
+
+</body>
+</html>
